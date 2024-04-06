@@ -29,15 +29,25 @@ pipeline {
             }
         }
         
-        stage('Sonarqube Analysis') {
-            steps {
-                    withSonarQubeEnv('sonar-server') {
-                        sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Java-WebApp \
-                        -Dsonar.java.binaries=. \
-                        -Dsonar.projectKey=Java-WebApp '''
+        // stage('Sonarqube Analysis') {
+        //     steps {
+        //             withSonarQubeEnv('sonar-server') {
+        //                 sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Java-WebApp \
+        //                 -Dsonar.java.binaries=. \
+        //                 -Dsonar.projectKey=Java-WebApp '''
     
-                }
-            }
+        //         }
+        //     }
+        // }
+        stage('Static Code Analysis') {
+        environment {
+          SONAR_URL = "http://20.65.201.125:9000"
+         }
+        steps {
+          withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_AUTH_TOKEN')]) {
+            sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+          }
+        }
         }
         
         stage('OWASP Dependency Check') {
