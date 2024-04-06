@@ -59,7 +59,8 @@ pipeline {
         
         stage('Maven Build') {
             steps {
-                    sh "mvn clean deploy"
+                    sh "pwd && ls -l"
+                    sh "mvn clean deploy -s .m2/settings.xml"
             }
         }
         
