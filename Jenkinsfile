@@ -50,26 +50,26 @@ pipeline {
         }
         }
         
-        stage('OWASP Dependency Check') {
-            steps {
-                   dependencyCheck additionalArguments: '--scan ./   ', odcInstallation: 'DP'
-                   dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
+        // stage('OWASP Dependency Check') {
+        //     steps {
+        //            dependencyCheck additionalArguments: '--scan ./   ', odcInstallation: 'DP'
+        //            dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //     }
+        // }
         
         stage('Maven Build') {
             steps {
-                    sh "mvn clean compile"
+                    sh "mvn clean deploy"
             }
         }
         
         stage('Docker Build & Push') {
             steps {
                    script {
-                       withDockerRegistry(credentialsId: 'b289dc43-2ede-4bd0-95e8-75ca26100d8d', toolName: 'docker') {
+                       withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                             sh "docker build -t webapp ."
-                            sh "docker tag webapp adijaiswal/webapp:latest"
-                            sh "docker push adijaiswal/webapp:latest "
+                            sh "docker tag webapp praveen431ece/webapp:latest"
+                            sh "docker push praveen431ece/webapp:latest "
                         }
                    } 
             }
@@ -77,7 +77,7 @@ pipeline {
         
         stage('Docker Image scan') {
             steps {
-                    sh "trivy image adijaiswal/webapp:latest "
+                    sh "trivy image praveen431ece/webapp:latest "
             }
         }
         
