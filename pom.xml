@@ -72,17 +72,17 @@
             <artifactId>sonar-maven-plugin</artifactId>
             <version>3.9.0.2155</version> <!-- Specify the latest version -->
         </plugin>
-        
+
         </plugins>
     </build>
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
-            <url>http://20.65.201.125:8081/repository/maven-releases/</url>
+            <url>http://13.68.206.128:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>maven-snapshots</id>
-            <url>http://20.65.201.125:8081/repository/maven-snapshots/</url>
+            <url>http://13.68.206.128:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
