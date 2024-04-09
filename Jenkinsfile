@@ -77,7 +77,16 @@ pipeline {
         
         stage('Docker Image scan') {
             steps {
-                    sh "trivy image praveen431ece/webapp:latest "
+                    sh "trivy image  --format table -o report.txt praveen431ece/webapp:latest"
+            }
+        }
+
+        stage('Archive artifacts') {
+            steps {
+                   archiveArtifacts artifacts: '**/*.html',
+                   allowEmptyArchive: true,
+                   fingerprint: true,
+                   onlyIfSuccessful: true
             }
         }
         
