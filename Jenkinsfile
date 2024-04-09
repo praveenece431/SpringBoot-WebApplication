@@ -50,12 +50,11 @@ pipeline {
         }
         }
         
-        // stage('OWASP Dependency Check') {
-        //     steps {
-        //            dependencyCheck additionalArguments: '--scan ./   ', odcInstallation: 'DP'
-        //            dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //     }
-        // }
+        stage('OWASP Dependency Check') {
+            steps {
+                   dependencyCheck additionalArguments: '--format HTML ./   ', odcInstallation: 'DP'
+            }
+        }
         
         stage('Maven Build') {
             steps {
