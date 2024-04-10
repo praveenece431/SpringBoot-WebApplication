@@ -13,8 +13,7 @@ public class StartApplication {
     @GetMapping("/")
     public String index(final Model model) {
         model.addAttribute("title", "This is a SpringBoot Static Web Application");
-        model.addAttribute("msg", "The application is successfully built from Jenkins CI");
-        model.addAttribute("msg", "**** Good Luck Guys, you are awesome..! *****");
+        model.addAttribute("msg", "The application is successfully built from Jenkins CI. Good Luck Guys, you are awesome..!");
         return "index";
     }
 
