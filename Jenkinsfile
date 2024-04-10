@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     tools {
-        jdk 'jdk17'
+        jdk 'JDK17'
         maven 'maven3'
     }
     
@@ -23,7 +23,7 @@ pipeline {
             }
         }
         
-        stage('Run Test Cases') {
+        stage('Run Unit Tests') {
             steps {
                     sh "mvn test"
             }
@@ -41,10 +41,10 @@ pipeline {
         // }
         stage('Static Code Analysis') {
         environment {
-          SONAR_URL = "http://40.87.6.40:9000"
+          SONAR_URL = "http://104.45.197.63:9000"
          }
         steps {
-          withCredentials([string(credentialsId: 'sonar-cred', variable: 'SONAR_AUTH_TOKEN')]) {
+          withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_AUTH_TOKEN')]) {
             sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
           }
         }
@@ -59,10 +59,17 @@ pipeline {
         stage('Maven Build') {
             steps {
                     sh "pwd && ls -l"
-                    sh "mvn clean deploy -s .m2/settings.xml"
+                    sh "mvn clean install -s .m2/settings.xml"
             }
         }
         
+        stage('Packahe upload to Nexus') {
+            steps {
+                    sh "pwd && ls -l"
+                    sh "mvn clean deploy -s .m2/settings.xml"
+            }
+        }
+
         stage('Docker Build & Push') {
             steps {
                    script {
@@ -77,7 +84,13 @@ pipeline {
         
         stage('Docker Image scan') {
             steps {
-                    sh "trivy image  --format table -o report.txt praveen431ece/webapp:latest"
+                    sh 'trivy image --format template --template "@html.tpl" -o image-scan-report.html praveen431ece/webapp:latest'
+            }
+        }
+        
+        stage('Clean up the docker image') {
+            steps {
+                    sh 'docker rmi webapp -f'
             }
         }
 
