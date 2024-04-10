@@ -1,4 +1,4 @@
-package com.abhishek;
+package com.praveen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
