@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring-boot-app
+  namespace: javaapp-dev
   labels:
     app: spring-boot-app
 spec:
@@ -16,6 +17,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: adijaiswal/xyz:tag
+        image: praveen431ece/webapp
         ports:
-        - containerPort: 8081
+        - containerPort: 8080
